@@ -5,12 +5,16 @@ const Networking = require('./networking');
 
 const network = new Networking('MyJavaScriptBot');
 
-function GenerateMove(square){
+function GenerateMove(square, loc){
     if(square.strength < square.production*5)
-        return new Move(square.loc, STILL);
+        return new Move(loc, 0);
     else
-        return new Move(square.loc,
+        return new Move(loc,
                         Math.floor(Math.random() * 5));
+}
+
+function MovToNeighbour(square, loc){
+    
 }
 
 network.on('map', (gameMap, myId) => {
@@ -21,7 +25,7 @@ network.on('map', (gameMap, myId) => {
             const loc = { x, y };
             const { owner } = gameMap.getSite(loc);
             if (owner === myId) {
-                moves.push(GenerateMove(gameMap.getSite(loc)));
+                moves.push(GenerateMove(gameMap.getSite(loc), loc));
             }
         }
     }
