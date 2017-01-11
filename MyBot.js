@@ -2,12 +2,15 @@ const {
     Move,
     STILL,
     CARDINALS,
+    NORTH,
+    EAST,
 } = require('./hlt');
 const Networking = require('./networking');
 
 const network = new Networking('MyJavaScriptBot');
+const MAX_STRENGTH = 255
 
-function GenerateMove(square, loc, gameMap, counter){
+function GenerateMove(square, loc, gameMap, counter){//first stage
     var moveDirection = STILL;
     for(var direction of CARDINALS){
         neighbour = gameMap.getSite(loc, direction);
@@ -17,11 +20,10 @@ function GenerateMove(square, loc, gameMap, counter){
             neighbour.owner == square.owner && square.strength > 2)){
                       moveDirection = direction;
         }
-        if(square.strength >= 100)
-            return new Move(loc, GetRandomInt(1,2));
-        /*else if(square.strength > square.production*5 && counter > 7){
-            return new Move(loc, GetRandomInt(1,2));
-        }*/
+        if(square.strength == MAX_STRENGTH)
+            return new Move(loc, EAST);
+        else if(square.strength >= 100)
+            return new Move(loc, NORTH);
     }
     return new Move(loc, moveDirection);
 }
